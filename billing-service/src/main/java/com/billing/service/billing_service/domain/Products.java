@@ -40,4 +40,59 @@ public class Products {
 
     @Column(name = "product_updated_at")
     private LocalDateTime productUpdatedAt;
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
+    }
+    public void setProductDefaultPrice(double productDefaultPrice) {
+        this.productDefaultPrice = productDefaultPrice;
+    }
+    public void setProductTaxPercentage(double productTaxPercentage) {
+        this.productTaxPercentage = productTaxPercentage;
+    }
+    public void setProductDescountPercentage(double productDescountPercentage) {
+        this.productDescountPercentage = productDescountPercentage;
+    }
+    public void setProductCreatedAt(LocalDateTime productCreatedAt) {
+        this.productCreatedAt = productCreatedAt;
+    }
+    public void setProductUpdatedAt(LocalDateTime productUpdatedAt) {
+        this.productUpdatedAt = productUpdatedAt;
+    }
+    public Long getProductId() {
+        return productId;
+    }
+    public String getProductCode() {
+        return productCode;
+    }
+    public String getProductName() {
+        return productName;
+    }
+    public String getProductDescription() {
+        return productDescription;
+    }
+    public double getProductDefaultPrice() {
+        return productDefaultPrice;
+    }
+    public double getProductTaxPercentage() {
+        return productTaxPercentage;
+    }
+    public double getProductDescountPercentage() {
+        return productDescountPercentage;
+    }
+    public LocalDateTime getProductCreatedAt() {
+        return productCreatedAt;
+    }
+    public LocalDateTime getProductUpdatedAt() {
+        return productUpdatedAt;
+    }
 }
