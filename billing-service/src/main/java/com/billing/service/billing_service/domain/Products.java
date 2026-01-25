@@ -1,8 +1,11 @@
 package com.billing.service.billing_service.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,6 +44,9 @@ public class Products {
     @Column(name = "product_updated_at")
     private LocalDateTime productUpdatedAt;
 
+    @OneToMany(mappedBy = "product")
+    private List<ProductsOrders> orders = new ArrayList<>();
+
     public void setProductId(Long productId) {
         this.productId = productId;
     }
@@ -68,6 +74,9 @@ public class Products {
     public void setProductUpdatedAt(LocalDateTime productUpdatedAt) {
         this.productUpdatedAt = productUpdatedAt;
     }
+    public void setOrders(List<ProductsOrders> orders) {
+        this.orders = orders;
+    }
     public Long getProductId() {
         return productId;
     }
@@ -94,5 +103,8 @@ public class Products {
     }
     public LocalDateTime getProductUpdatedAt() {
         return productUpdatedAt;
+    }
+    public List<ProductsOrders> getOrders() {
+        return orders;
     }
 }

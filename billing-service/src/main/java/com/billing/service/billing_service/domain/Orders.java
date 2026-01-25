@@ -1,12 +1,16 @@
 package com.billing.service.billing_service.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,6 +27,13 @@ public class Orders {
     @Column(name = "order_created_at")
     private LocalDateTime order_created_at;
 
+    @OneToMany(
+        mappedBy = "order",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<ProductsOrders> products = new ArrayList<>();
+
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
@@ -32,6 +43,9 @@ public class Orders {
     public void setOrder_created_at(LocalDateTime order_created_at) {
         this.order_created_at = order_created_at;
     }
+    public void setProducts(List<ProductsOrders> products) {
+        this.products = products;
+    }
     public Long getOrderId() {
         return orderId;
     }
@@ -40,5 +54,8 @@ public class Orders {
     }
     public LocalDateTime getOrder_created_at() {
         return order_created_at;
+    }
+    public List<ProductsOrders> getProducts() {
+        return products;
     }
 }
