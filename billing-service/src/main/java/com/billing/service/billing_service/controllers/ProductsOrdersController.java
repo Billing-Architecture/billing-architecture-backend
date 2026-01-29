@@ -1,15 +1,17 @@
 package com.billing.service.billing_service.controllers;
 
-import java.util.Collections;
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.billing.service.billing_service.domain.ProductsOrders;
 import com.billing.service.billing_service.services.IProductsOrdersService;
 
 @Controller
@@ -18,17 +20,16 @@ public class ProductsOrdersController {
     @Autowired
     private IProductsOrdersService service;
 
-    @SuppressWarnings("rawtypes")
     @GetMapping("/list")
     @ResponseBody
-    public Map listDetails() {
-        return Collections.singletonMap("details", service.getProductsOrders());
+    public List<ProductsOrders> listDetails() {
+        return service.getProductsOrders();
     }
 
-    @SuppressWarnings("rawtypes")
     @PostMapping("/add")
     @ResponseBody
-    public Map createDetails() {
-        return listDetails();
+    public List<ProductsOrders> createDetails(@RequestBody @Validated ProductsOrders details[]) {
+        service.saveProductsOrders(details);
+        return listDetails();   
     }
 }

@@ -1,12 +1,16 @@
 package com.billing.service.billing_service.jpa;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.billing.service.billing_service.domain.Orders;
 import com.billing.service.billing_service.domain.ProductsOrders;
+import com.billing.service.billing_service.repositorys.OrdersRepository;
 import com.billing.service.billing_service.repositorys.ProductsOrdersRepository;
 import com.billing.service.billing_service.services.IProductsOrdersService;
 
@@ -15,20 +19,47 @@ import com.billing.service.billing_service.services.IProductsOrdersService;
 public class ProductsOrdersServiceJPA implements IProductsOrdersService{
 
     @Autowired
-    ProductsOrdersRepository repository;
+    ProductsOrdersRepository repositoryDetails;
 
+    @Autowired
+    OrdersRepository repositoryOrder;
+
+    @Transactional
     @Override
-    public void saveProductsOrders(ProductsOrders details) {
-        repository.save(details);
+    public void saveProductsOrders(ProductsOrders details[]) {
+        Orders order = new Orders();
+        
+        order.setOrderState("Pending");
+        order.setOrder_created_at(LocalDateTime.now());
+
+        double descount = 0;
+        double tax = 0;
+        double subTotal = 0;
+        double total = 0;
+
+        for(ProductsOrders detail : details){
+            detail.setOrder(order);
+            detail.setProductsOrdersPrice(detail.getProduct().getProductDefaultPrice());
+
+            subTotal = detail.getProduct().getProductDefaultPrice() * detail.getProductsOrdersQuantity();
+            descount = (detail.getProduct().getProductDescountPercentage() * detail.getProduct().getProductDefaultPrice()) * detail.getProductsOrdersQuantity();
+            tax = detail.getProduct().getProductTaxPercentage() * detail.getProduct().getProductDefaultPrice() * detail.getProductsOrdersQuantity();
+            total = (subTotal-descount)+tax;
+
+            detail.setProductsOrdersSubtotal(subTotal);
+            detail.setProductsOrdersTotal(total);
+            order.getProducts().add(detail);
+        }
+        order = repositoryOrder.save(order);
     }
 
     @Override
     public List<ProductsOrders> getProductsOrders() {
-        return repository.findAll();
+        return repositoryDetails.findAll();
     }
 
     @Override
     public ProductsOrders byId(int id) {
-        return repository.findById(id).get();
+        return repositoryDetails.findById(id).orElseThrow(() -> new RuntimeException("Detail not found."));
     }
 }
