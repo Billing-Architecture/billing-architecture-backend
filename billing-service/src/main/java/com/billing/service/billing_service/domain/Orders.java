@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -34,6 +35,9 @@ public class Orders {
     )
     private List<ProductsOrders> products = new ArrayList<>();
 
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Bills bill;
+
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
@@ -46,6 +50,9 @@ public class Orders {
     public void setProducts(List<ProductsOrders> products) {
         this.products = products;
     }
+    public void setBill(Bills bill) {
+        this.bill = bill;
+    }
     public Long getOrderId() {
         return orderId;
     }
@@ -57,5 +64,8 @@ public class Orders {
     }
     public List<ProductsOrders> getProducts() {
         return products;
+    }
+    public Bills getBill() {
+        return bill;
     }
 }
