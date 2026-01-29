@@ -18,8 +18,8 @@ public class OrdersServiceJPA implements IOrdersService{
     OrdersRepository repository;
     
     @Override
-    public void createOrders(Orders order) {
-        repository.save(order);
+    public Orders createOrders(Orders order) {
+        return repository.save(order);
     }
 
     @Override
