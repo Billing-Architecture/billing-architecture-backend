@@ -1,12 +1,19 @@
 package com.billing.service.billing_service.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,8 +24,12 @@ public class Bills {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long billId;
 
-    @Column(name = "bill_order")
-    private Orders billOrder;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false, unique = true)
+    private Orders order;
+
+    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
+    private List<Payments> payments = new ArrayList<>();
 
     @Column(name = "bill_code")
     private int billCode;
@@ -44,8 +55,8 @@ public class Bills {
     public void setBillCode(int billCode) {
         this.billCode = billCode;
     }
-    public void setBillOrder(Orders billOrder) {
-        this.billOrder = billOrder;
+    public void setOrder(Orders order) {
+        this.order = order;
     }
     public void setBillState(String billState) {
         this.billState = billState;
@@ -62,14 +73,17 @@ public class Bills {
     public void setBillCreatedAt(LocalDateTime billCreatedAt) {
         this.billCreatedAt = billCreatedAt;
     }
+    public void setPayments(List<Payments> payments) {
+        this.payments = payments;
+    }
     public Long getBillId() {
         return billId;
     }
     public int getBillCode() {
         return billCode;
     }
-    public Orders getBillOrder() {
-        return billOrder;
+    public Orders getOrder() {
+        return order;
     }
     public String getBillState() {
         return billState;
@@ -85,5 +99,8 @@ public class Bills {
     }
     public LocalDateTime getBillCreatedAt() {
         return billCreatedAt;
+    }
+    public List<Payments> getPayments() {
+        return payments;
     }
 }
