@@ -48,6 +48,24 @@ src/main/billing/service/billing-service
 | PUT    | /products/edit        | Update information of a product |
 | DELETE | /products/{id}        | Delete a product                |
 
+### Bills
+| Method | Endpoint              | Description                     |
+|--------|-----------------------|---------------------------------|
+| GET    | /bills/list           | Get a list of bills             |
+| POST   | /bills/add            | Add and generate bill           |
+
+### Orders Details
+| Method | Endpoint              | Description                     |
+|--------|-----------------------|---------------------------------|
+| GET    | /details/list         | Get a list of orders details    |
+| POST   | /details/add          | Add and generate order detail   |
+
+### Payments
+| Method | Endpoint              | Description                     |
+|--------|-----------------------|---------------------------------|
+| GET    | /payments/list        | Get a list of payments          |
+| POST   | /payments/add         | Add and generate payment        |
+
 ---
 
 ## Example Request (JSON)
