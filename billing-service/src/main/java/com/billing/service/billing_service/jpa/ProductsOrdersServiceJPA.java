@@ -8,8 +8,10 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.billing.service.billing_service.domain.Bills;
 import com.billing.service.billing_service.domain.Orders;
 import com.billing.service.billing_service.domain.ProductsOrders;
+import com.billing.service.billing_service.repositorys.BillsRepository;
 import com.billing.service.billing_service.repositorys.OrdersRepository;
 import com.billing.service.billing_service.repositorys.ProductsOrdersRepository;
 import com.billing.service.billing_service.services.IProductsOrdersService;
@@ -24,6 +26,9 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
     @Autowired
     OrdersRepository repositoryOrder;
 
+    @Autowired
+    BillsRepository repositoryBill;
+
     @Transactional
     @Override
     public void saveProductsOrders(ProductsOrders details[]) {
@@ -37,6 +42,9 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
         double subTotal = 0;
         double total = 0;
 
+        double subTotalBill = 0;
+        double totalBill = 0;
+
         for(ProductsOrders detail : details){
             detail.setOrder(order);
             detail.setProductsOrdersPrice(detail.getProduct().getProductDefaultPrice());
@@ -46,11 +54,26 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
             tax = detail.getProduct().getProductTaxPercentage() * detail.getProduct().getProductDefaultPrice() * detail.getProductsOrdersQuantity();
             total = (subTotal-descount)+tax;
 
+            subTotalBill += subTotal;
+            totalBill += total;
+
             detail.setProductsOrdersSubtotal(subTotal);
             detail.setProductsOrdersTotal(total);
             order.getProducts().add(detail);
         }
-        order = repositoryOrder.save(order);
+
+        Bills bill = new Bills();
+        bill.setBillCode(0);
+        bill.setBillTotalPaid(0);
+        bill.setBillSubtotal(subTotalBill);
+        bill.setBillTotal(totalBill);
+        bill.setBillState("Pending");
+        bill.setBillCreatedAt(LocalDateTime.now());
+
+        bill.setOrder(order);
+        order.setBill(bill);
+
+        repositoryBill.save(bill);
     }
 
     @Override
