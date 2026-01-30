@@ -23,7 +23,7 @@ public class ProductsServiceJPA implements IProductService{
     }
 
     @Override
-    public Products byId(int id) {
+    public Products byId(Long id) {
         return repository.findById(id).get();
     }
 
@@ -33,7 +33,7 @@ public class ProductsServiceJPA implements IProductService{
     }
 
     @Override
-    public void deleteProduct(int id) {
+    public void deleteProduct(Long id) {
         repository.deleteById(id);
     }    
 }

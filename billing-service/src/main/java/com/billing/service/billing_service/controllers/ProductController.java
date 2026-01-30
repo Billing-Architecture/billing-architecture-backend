@@ -34,7 +34,7 @@ public class ProductController {
 
     @GetMapping("/find/{id}")
     @ResponseBody
-    public Products getProduct(@PathVariable("id") int id) {
+    public Products getProduct(@PathVariable("id") Long id) {
         return service.byId(id);
     }
 
@@ -57,7 +57,7 @@ public class ProductController {
     @SuppressWarnings("rawtypes")
     @DeleteMapping("/delete/{id}")
     @ResponseBody
-    public Map deleteProduct(@PathVariable("id") int id){
+    public Map deleteProduct(@PathVariable("id") Long id){
         service.deleteProduct(id);
         return listProducts();
     }

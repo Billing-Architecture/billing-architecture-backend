@@ -6,7 +6,7 @@ import com.billing.service.billing_service.domain.Products;
 
 public interface IProductService {
     List<Products> getProducts();
-    Products byId(int id);
+    Products byId(Long id);
     void saveProduct(Products product);
-    void deleteProduct (int id);
+    void deleteProduct (Long id);
 }
