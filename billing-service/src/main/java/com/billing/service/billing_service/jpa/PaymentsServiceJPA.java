@@ -37,8 +37,8 @@ public class PaymentsServiceJPA implements IPaymentsService{
         double newPayment = payment.getPaymentTotal();
         double billTotal = bill.getBillTotal();
 
-        if (totalPaid > (totalPaid + newPayment)) {
-            throw new RuntimeException("El pago excede el total de la factura");
+        if ((totalPaid + newPayment) > totalPaid) {
+            throw new RuntimeException("The payment exceeds the total invoice amount");
         }
         
         bill.getPayments().add(payment);
