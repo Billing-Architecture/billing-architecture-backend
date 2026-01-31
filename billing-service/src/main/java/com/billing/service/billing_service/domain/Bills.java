@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,9 +28,11 @@ public class Bills {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false, unique = true)
+    @JsonIgnore
     private Orders order;
 
     @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Payments> payments = new ArrayList<>();
 
     @Column(name = "bill_code")

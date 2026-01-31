@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,6 +35,7 @@ public class Orders {
         cascade = CascadeType.ALL,
         orphanRemoval = true
     )
+    @JsonIgnore
     private List<ProductsOrders> products = new ArrayList<>();
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)

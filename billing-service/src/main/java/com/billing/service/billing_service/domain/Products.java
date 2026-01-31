@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Column;
@@ -14,6 +17,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "products")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Products {
     @Id
     @Column(name = "product_id")
@@ -45,6 +49,7 @@ public class Products {
     private LocalDateTime productUpdatedAt;
 
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private List<ProductsOrders> orders = new ArrayList<>();
 
     public void setProductId(Long productId) {

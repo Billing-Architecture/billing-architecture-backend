@@ -46,13 +46,24 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
         double totalBill = 0;
 
         for(ProductsOrders detail : details){
+            
             detail.setOrder(order);
             detail.setProductsOrdersPrice(detail.getProduct().getProductDefaultPrice());
 
-            subTotal = detail.getProduct().getProductDefaultPrice() * detail.getProductsOrdersQuantity();
-            descount = (detail.getProduct().getProductDescountPercentage() * detail.getProduct().getProductDefaultPrice()) * detail.getProductsOrdersQuantity();
-            tax = detail.getProduct().getProductTaxPercentage() * detail.getProduct().getProductDefaultPrice() * detail.getProductsOrdersQuantity();
-            total = (subTotal-descount)+tax;
+            subTotal = 
+                detail.getProduct().getProductDefaultPrice() * 
+                detail.getProductsOrdersQuantity();
+
+            descount = 
+                (detail.getProduct().getProductDescountPercentage() * 
+                detail.getProduct().getProductDefaultPrice()) * 
+                detail.getProductsOrdersQuantity();
+
+            tax = detail.getProduct().getProductTaxPercentage() * 
+                detail.getProduct().getProductDefaultPrice() * 
+                detail.getProductsOrdersQuantity();
+
+            total = (subTotal-descount) + tax;
 
             subTotalBill += subTotal;
             totalBill += total;
@@ -62,6 +73,8 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
             order.getProducts().add(detail);
         }
 
+        order = repositoryOrder.save(order);
+
         Bills bill = new Bills();
         bill.setBillCode(0);
         bill.setBillTotalPaid(0);
@@ -69,9 +82,7 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
         bill.setBillTotal(totalBill);
         bill.setBillState("Pending");
         bill.setBillCreatedAt(LocalDateTime.now());
-
         bill.setOrder(order);
-        order.setBill(bill);
 
         repositoryBill.save(bill);
     }
