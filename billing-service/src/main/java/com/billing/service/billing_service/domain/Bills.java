@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -20,6 +21,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "bills")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Bills {
     @Id
     @Column(name = "bill_id")

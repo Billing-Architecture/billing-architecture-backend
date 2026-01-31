@@ -1,5 +1,6 @@
 package com.billing.service.billing_service.jpa;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.billing.service.billing_service.domain.Bills;
 import com.billing.service.billing_service.domain.Payments;
+import com.billing.service.billing_service.repositorys.BillsRepository;
 import com.billing.service.billing_service.repositorys.OrdersRepository;
 import com.billing.service.billing_service.repositorys.PaymentsRepository;
 import com.billing.service.billing_service.services.IPaymentsService;
@@ -23,10 +25,13 @@ public class PaymentsServiceJPA implements IPaymentsService{
     @Autowired
     OrdersRepository repositoryOrder;
 
+    @Autowired
+    BillsRepository repositoryBill;
+
     @Override
     @Transactional
     public void savePayment(Payments payment) {
-        Bills bill = payment.getBill();
+        Bills bill = repositoryBill.findById(payment.getBill().getBillId()).orElseThrow(() -> new RuntimeException("Bill not found"));
         double totalPaid = 0; 
         double totalPayment = payment.getPaymentTotal();
 
@@ -37,18 +42,20 @@ public class PaymentsServiceJPA implements IPaymentsService{
         double newPayment = payment.getPaymentTotal();
         double billTotal = bill.getBillTotal();
 
-        if ((totalPaid + newPayment) > totalPaid) {
+        if (totalPaid + newPayment > billTotal) {
             throw new RuntimeException("The payment exceeds the total invoice amount");
         }
         
+        payment.setBill(bill);
         bill.getPayments().add(payment);
+        
         bill.setBillTotalPaid(totalPaid + totalPayment);
+        bill.setBillState(
+            bill.getBillTotalPaid() == billTotal ? "PAID" : "PARTIAL"
+        );
+        
+        payment.setPaymentCreatedAt(LocalDateTime.now());
 
-        if (bill.getBillTotalPaid() == billTotal) {
-            bill.setBillState("PAID");
-        } else {
-            bill.setBillState("PARTIAL");
-        }
         repository.save(payment);
     }
 
