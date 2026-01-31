@@ -48,17 +48,11 @@ src/main/billing/service/billing-service
 | PUT    | /products/edit        | Update information of a product |
 | DELETE | /products/{id}        | Delete a product                |
 
-### Bills
-| Method | Endpoint              | Description                     |
-|--------|-----------------------|---------------------------------|
-| GET    | /bills/list           | Get a list of bills             |
-| POST   | /bills/add            | Add and generate bill           |
-
 ### Orders Details
-| Method | Endpoint              | Description                     |
-|--------|-----------------------|---------------------------------|
-| GET    | /details/list         | Get a list of orders details    |
-| POST   | /details/add          | Add and generate order detail   |
+| Method | Endpoint              | Description                              |
+|--------|-----------------------|------------------------------------------|
+| GET    | /details/list         | Get a list of orders details             |
+| POST   | /details/add          | Add and generate order detail and invoice|
 
 ### Payments
 | Method | Endpoint              | Description                     |
@@ -69,7 +63,7 @@ src/main/billing/service/billing-service
 ---
 
 ## Example Request (JSON)
-Here are two examples of how to make a request to the endpoints described above. You can use tools commonly used for testing and consuming APIs, such as Postman.  
+Here are examples of how to make a request to the endpoints described above. You can use tools commonly used for testing and consuming APIs, such as Postman.  
 
 ### Example to get products
 - HTTP Request to get a list of products
@@ -80,7 +74,7 @@ Here are two examples of how to make a request to the endpoints described above.
 ### Example to get a product
 - HTTP Request to get a product
 ```json
-    GET http://host:port/products/find/1
+    GET http://host:port/products/find/{number}
 ```
 
 ### Example to create a product
@@ -89,7 +83,7 @@ Here are two examples of how to make a request to the endpoints described above.
 {
     "productCode": "product_code",
     "productName": "product",
-    "productDescription": "product description",
+    "productDescription": "product_description",
     "productDefaultPrice": 999,
     "productTaxPercentage": 13.0,
     "productDescountPercentage": 5.0
@@ -110,24 +104,65 @@ Here are two examples of how to make a request to the endpoints described above.
 }  
 ```
 
-### Example to update a product
-- Request to update a product
-```json
-{  
-    "productId": 1,
-    "productCode": "product_code",
-    "productName": "product",
-    "productDescription": "product description",
-    "productDefaultPrice": 999,
-    "productTaxPercentage": 13.0,
-    "productDescountPercentage": 5.0
-}  
-```
-
 ### Example to delete a product
 - HTTP Request to delete a product
 ```json
-    DELETE http://host:port/products/delete/1
+    DELETE http://host:port/products/delete/{number}
+```
+
+### Example to list order details
+- HTTP Request to list order details
+```json
+    GET http://host:port/details/list
+```
+
+### Example to add order detail
+- Request to add a detail
+```json
+[
+    {
+        "productsOrdersQuantity": 2,
+        "product": {
+            "productId": 2, 
+            "productCode": "product_code",
+            "productName": "product_name",
+            "productDescription": "product_description",
+            "productDefaultPrice": 950.00,
+            "productTaxPercentage": 13.0,
+            "productDescountPercentage": 5.0
+        }
+    },
+    {
+        "productsOrdersQuantity": 2,
+        "product": {
+            "productId": 3, 
+            "productCode": "product_code",
+            "productName": "product_name",
+            "productDescription": "product_description",
+            "productDefaultPrice": 950.00,
+            "productTaxPercentage": 13.0,
+            "productDescountPercentage": 5.0
+        }
+    }
+]
+```
+
+### Example to list payments
+- HTTP Request to list payments
+```json
+    GET http://host:port/payments/list
+```
+
+### Example to add payment
+- Request to add a payment
+```json
+{
+  "bill": {
+    "billId": 2
+  },
+  "paymentType": "CARD",
+  "paymentTotal": 34200
+}
 ```
 
 ---
@@ -139,12 +174,20 @@ git clone https://github.com/Billing-Architecture/billing-architecture-backend.g
 cd billing-service
 ```
 
-2. Configure environment variables  
-Instead of using .env files, the application is configured using application.properties and operating system environment variables.  
+2. Configure environment variables
 ```bash
-$env:DB_URL="jdbc:database_url"  
-$env:DB_USER="database_user"  
-$env:DB_PASSWORD="password"   
+cp .env.example .env
+
+```
+
+---
+
+## Environment variables
+The .env file contains: 
+```bash
+DB_URL="jdbc:DATABASE_URL"  
+DB_USER="DATABASE_USER"  
+DB_PASSWORD="PASSWORD"   
 ```
 ---
 
