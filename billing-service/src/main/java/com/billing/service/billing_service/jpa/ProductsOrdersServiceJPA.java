@@ -31,7 +31,7 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
 
     @Transactional
     @Override
-    public void saveProductsOrders(ProductsOrders details[]) {
+    public Bills saveProductsOrders(ProductsOrders details[]) {
         Orders order = new Orders();
         
         order.setOrderState("Pending");
@@ -84,7 +84,7 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
         bill.setBillCreatedAt(LocalDateTime.now());
         bill.setOrder(order);
 
-        repositoryBill.save(bill);
+        return repositoryBill.save(bill);
     }
 
     @Override

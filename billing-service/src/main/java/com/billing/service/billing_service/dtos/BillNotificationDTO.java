@@ -8,36 +8,36 @@ public class BillNotificationDTO extends NotificationRequest{
     private String billCode;
 
     @JsonProperty("bill_total")
-    private Integer billTotal;
+    private double billTotal;
 
     @JsonProperty("bill_total_paid")
-    private Integer billTotalPaid;
+    private double billTotalPaid;
 
     @JsonProperty("bill_to_pay")
-    private Integer billToPay;
+    private double billToPay;
 
     public void setBillCode(String billCode) {
         this.billCode = billCode;
     }
-    public void setBillTotal(Integer billTotal) {
+    public void setBillTotal(double billTotal) {
         this.billTotal = billTotal;
     }
-    public void setBillTotalPaid(Integer billTotalPaid) {
+    public void setBillTotalPaid(double billTotalPaid) {
         this.billTotalPaid = billTotalPaid;
     }
-    public void setBillToPay(Integer billToPay) {
+    public void setBillToPay(double billToPay) {
         this.billToPay = billToPay;
     }
     public String getBillCode() {
         return billCode;
     }
-    public Integer getBillTotal() {
+    public double getBillTotal() {
         return billTotal;
     }
-    public Integer getBillTotalPaid() {
+    public double getBillTotalPaid() {
         return billTotalPaid;
     }
-    public Integer getBillToPay() {
+    public double getBillToPay() {
         return billToPay;
     }
 }

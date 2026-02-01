@@ -30,7 +30,7 @@ public class PaymentsServiceJPA implements IPaymentsService{
 
     @Override
     @Transactional
-    public void savePayment(Payments payment) {
+    public Payments savePayment(Payments payment) {
         Bills bill = repositoryBill.findById(payment.getBill().getBillId()).orElseThrow(() -> new RuntimeException("Bill not found"));
         double totalPaid = 0; 
         double totalPayment = payment.getPaymentTotal();
@@ -56,7 +56,7 @@ public class PaymentsServiceJPA implements IPaymentsService{
         
         payment.setPaymentCreatedAt(LocalDateTime.now());
 
-        repository.save(payment);
+        return repository.save(payment);
     }
 
     @Override

@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.billing.service.billing_service.domain.Bills;
 import com.billing.service.billing_service.domain.ProductsOrders;
+import com.billing.service.billing_service.services.INotificationService;
 import com.billing.service.billing_service.services.IProductsOrdersService;
 
 @Controller
@@ -19,6 +21,9 @@ import com.billing.service.billing_service.services.IProductsOrdersService;
 public class ProductsOrdersController {
     @Autowired
     private IProductsOrdersService service;
+
+    @Autowired
+    private INotificationService notifyService;
 
     @GetMapping("/list")
     @ResponseBody
@@ -29,7 +34,8 @@ public class ProductsOrdersController {
     @PostMapping("/add")
     @ResponseBody
     public List<ProductsOrders> createDetails(@RequestBody @Validated ProductsOrders details[]) {
-        service.saveProductsOrders(details);
+        Bills saveBill = service.saveProductsOrders(details);
+        notifyService.sendEmail(saveBill);
         return listDetails();   
     }
 }
