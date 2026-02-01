@@ -1,9 +1,19 @@
 package com.billing.service.billing_service.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class BillNotificationDTO extends NotificationRequest{
+
+    @JsonProperty("bill_code")
     private String billCode;
+
+    @JsonProperty("bill_total")
     private Integer billTotal;
+
+    @JsonProperty("bill_total_paid")
     private Integer billTotalPaid;
+
+    @JsonProperty("bill_to_pay")
     private Integer billToPay;
 
     public void setBillCode(String billCode) {

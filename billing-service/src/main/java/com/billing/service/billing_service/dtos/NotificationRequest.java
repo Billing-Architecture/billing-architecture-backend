@@ -1,10 +1,21 @@
 package com.billing.service.billing_service.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class NotificationRequest {
+    @JsonProperty("reference_id")
     private Long referenceId;
+
+    @JsonProperty("notification_receiver")
     private String notificationReceiver;
+
+    @JsonProperty("notification_subject")
     private String notificationSubject;
+
+    @JsonProperty("notification_message")
     private String notificationMessage;
+
+    @JsonProperty("notification_reference_type")
     private String notificationReferenceType;
 
     public void setReferenceId(Long referenceId) {
