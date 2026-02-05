@@ -6,7 +6,7 @@ import com.billing.service.billing_service.domain.Bills;
 import com.billing.service.billing_service.domain.ProductsOrders;
 
 public interface IProductsOrdersService {
-    Bills saveProductsOrders(ProductsOrders[] details, String email);
+    Bills saveProductsOrders(ProductsOrders[] details);
     List<ProductsOrders> getProductsOrders();
     ProductsOrders byId(int id);
 }

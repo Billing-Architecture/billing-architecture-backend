@@ -37,8 +37,8 @@ public class ProductsOrdersController {
     public List<ProductsOrders> createDetails(@RequestBody @Validated CreateDetailRequest request) {
         ProductsOrders[] details = request.getDetail();
         String email = request.getEmail();
-        Bills saveBill = service.saveProductsOrders(details, email);
-        notifyService.sendEmail(saveBill);
+        Bills saveBill = service.saveProductsOrders(details);
+        notifyService.sendEmail(saveBill, email);
         return listDetails();   
     }
 }

@@ -31,7 +31,7 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
 
     @Transactional
     @Override
-    public Bills saveProductsOrders(ProductsOrders details[], String email) {
+    public Bills saveProductsOrders(ProductsOrders details[]) {
         Orders order = new Orders();
         
         order.setOrderState("Pending");
@@ -76,7 +76,6 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
 
         Bills bill = new Bills();
         bill.setBillCode("BILL-" + order.getOrderId());
-        bill.setBillUserEmail(email);
         bill.setBillTotalPaid(0);
         bill.setBillSubtotal(subTotalBill);
         bill.setBillTotal(totalBill);
