@@ -5,6 +5,6 @@ import java.util.List;
 import com.billing.service.billing_service.domain.Payments;
 
 public interface IPaymentsService {
-    Payments savePayment(Payments payment, String email);
+    Payments savePayment(Payments payment);
     List<Payments> getPayment();
 }
