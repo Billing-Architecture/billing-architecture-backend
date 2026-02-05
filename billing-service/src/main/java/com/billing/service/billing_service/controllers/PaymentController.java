@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.billing.service.billing_service.domain.Payments;
+import com.billing.service.billing_service.dtos.CreatePaymentRequest;
 import com.billing.service.billing_service.services.INotificationService;
 import com.billing.service.billing_service.services.IPaymentsService;
 
@@ -34,9 +35,9 @@ public class PaymentController {
     @SuppressWarnings("rawtypes")
     @PostMapping("/add")
     @ResponseBody
-    public Map createPayment(@RequestBody @Validated Payments payment) {
-        Payments savePayment = service.savePayment(payment);
-        notifyService.sendEmail(savePayment);
+    public Map createPayment(@RequestBody @Validated CreatePaymentRequest payment) {
+        Payments savePayment = service.savePayment(payment.getPayment());
+        notifyService.sendEmail(savePayment, payment.getEmail());
         return listPayments();
     }
 }

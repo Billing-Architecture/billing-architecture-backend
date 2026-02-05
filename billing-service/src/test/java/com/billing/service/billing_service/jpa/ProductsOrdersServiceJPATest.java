@@ -45,7 +45,7 @@ public class ProductsOrdersServiceJPATest {
 
         when(repositoryOrder.save(any(Orders.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        service.saveProductsOrders(details, "user@example.com");
+        service.saveProductsOrders(details);
         
         assertNotNull(detail.getOrder());
         assertEquals(200, detail.getProductsOrdersSubtotal());

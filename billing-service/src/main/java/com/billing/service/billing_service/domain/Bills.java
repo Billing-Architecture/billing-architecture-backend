@@ -28,9 +28,6 @@ public class Bills {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long billId;
 
-    @Column(name = "bill_user_email", updatable = false)
-    private String billUserEmail;
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false, unique = true)
     @JsonIgnore
@@ -64,9 +61,6 @@ public class Bills {
     public void setBillCode(String billCode) {
         this.billCode = billCode;
     }
-    public void setBillUserEmail(String billUserEmail) {
-        this.billUserEmail = billUserEmail;
-    }
     public void setOrder(Orders order) {
         this.order = order;
     }
@@ -93,9 +87,6 @@ public class Bills {
     }
     public String getBillCode() {
         return billCode;
-    }
-    public String getBillUserEmail() {
-        return billUserEmail;
     }
     public Orders getOrder() {
         return order;
