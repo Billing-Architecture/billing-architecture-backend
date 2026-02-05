@@ -54,7 +54,7 @@ public class PaymentsServiceJPATest {
         payment.setPaymentTotal(40);
         payment.setBill(bill);
 
-        serviceJPA.savePayment(payment, "user@example.com");
+        serviceJPA.savePayment(payment);
 
         assertEquals(40, bill.getBillTotalPaid());
         assertEquals("PARTIAL", bill.getBillState());
@@ -78,7 +78,7 @@ public class PaymentsServiceJPATest {
         payment.setPaymentTotal(40);
         payment.setBill(bill);
 
-        serviceJPA.savePayment(payment, "user@example.com");
+        serviceJPA.savePayment(payment);
 
         assertEquals(100, bill.getBillTotalPaid());
         assertEquals("PAID", bill.getBillState());
@@ -103,7 +103,7 @@ public class PaymentsServiceJPATest {
 
         RuntimeException exception = assertThrows(
             RuntimeException.class,
-            () -> serviceJPA.savePayment(payment, "user@example.com")
+            () -> serviceJPA.savePayment(payment)
         );
 
         assertEquals("The payment exceeds the total invoice amount", exception.getMessage());

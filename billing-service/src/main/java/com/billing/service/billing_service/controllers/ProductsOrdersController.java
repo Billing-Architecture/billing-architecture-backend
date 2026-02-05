@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.billing.service.billing_service.domain.Bills;
 import com.billing.service.billing_service.domain.ProductsOrders;
+import com.billing.service.billing_service.dtos.CreateDetailRequest;
 import com.billing.service.billing_service.services.INotificationService;
 import com.billing.service.billing_service.services.IProductsOrdersService;
 
@@ -33,7 +34,9 @@ public class ProductsOrdersController {
 
     @PostMapping("/add")
     @ResponseBody
-    public List<ProductsOrders> createDetails(@RequestBody @Validated ProductsOrders details[], String email) {
+    public List<ProductsOrders> createDetails(@RequestBody @Validated CreateDetailRequest request) {
+        ProductsOrders[] details = request.getDetail();
+        String email = request.getEmail();
         Bills saveBill = service.saveProductsOrders(details, email);
         notifyService.sendEmail(saveBill);
         return listDetails();   

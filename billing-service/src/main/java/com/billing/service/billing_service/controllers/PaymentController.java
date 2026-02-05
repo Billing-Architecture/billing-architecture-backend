@@ -34,8 +34,8 @@ public class PaymentController {
     @SuppressWarnings("rawtypes")
     @PostMapping("/add")
     @ResponseBody
-    public Map createPayment(@RequestBody @Validated Payments payment, String email) {
-        Payments savePayment = service.savePayment(payment, email);
+    public Map createPayment(@RequestBody @Validated Payments payment) {
+        Payments savePayment = service.savePayment(payment);
         notifyService.sendEmail(savePayment);
         return listPayments();
     }
