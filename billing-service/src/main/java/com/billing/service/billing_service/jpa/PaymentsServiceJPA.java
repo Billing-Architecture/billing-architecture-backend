@@ -30,7 +30,7 @@ public class PaymentsServiceJPA implements IPaymentsService{
 
     @Override
     @Transactional
-    public Payments savePayment(Payments payment) {
+    public Payments savePayment(Payments payment, String email) {
         Bills bill = repositoryBill.findById(payment.getBill().getBillId()).orElseThrow(() -> new RuntimeException("Bill not found"));
         double totalPaid = 0; 
         double totalPayment = payment.getPaymentTotal();
@@ -46,6 +46,7 @@ public class PaymentsServiceJPA implements IPaymentsService{
             throw new RuntimeException("The payment exceeds the total invoice amount");
         }
         
+        payment.setPaymentUserEmail(email);
         payment.setBill(bill);
         bill.getPayments().add(payment);
         

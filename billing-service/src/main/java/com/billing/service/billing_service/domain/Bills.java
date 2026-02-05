@@ -38,7 +38,7 @@ public class Bills {
     private List<Payments> payments = new ArrayList<>();
 
     @Column(name = "bill_code")
-    private int billCode;
+    private String billCode;
 
     @Column(name = "bill_subtotal")
     private double billSubtotal;
@@ -58,7 +58,7 @@ public class Bills {
     public void setBillId(Long billId) {
         this.billId = billId;
     }
-    public void setBillCode(int billCode) {
+    public void setBillCode(String billCode) {
         this.billCode = billCode;
     }
     public void setOrder(Orders order) {
@@ -85,7 +85,7 @@ public class Bills {
     public Long getBillId() {
         return billId;
     }
-    public int getBillCode() {
+    public String getBillCode() {
         return billCode;
     }
     public Orders getOrder() {

@@ -33,8 +33,8 @@ public class ProductsOrdersController {
 
     @PostMapping("/add")
     @ResponseBody
-    public List<ProductsOrders> createDetails(@RequestBody @Validated ProductsOrders details[]) {
-        Bills saveBill = service.saveProductsOrders(details);
+    public List<ProductsOrders> createDetails(@RequestBody @Validated ProductsOrders details[], String email) {
+        Bills saveBill = service.saveProductsOrders(details, email);
         notifyService.sendEmail(saveBill);
         return listDetails();   
     }
