@@ -25,7 +25,7 @@ public class NotificationService implements INotificationService{
         notification.setNotificationSubject("Purchase invoice");
         notification.setNotificationMessage("Thank you for your purchase. We have attached the invoice in PDF format.");
         notification.setNotificationReferenceType("INVOICE");
-        notification.setNotificationReceiver(details.getOrder().getOrderUserEmail());
+        notification.setNotificationReceiver(details.getBillUserEmail());
         notification.setBillCode(details.getBillCode());
         notification.setBillToPay(details.getBillTotal());
         notification.setBillTotal(details.getBillTotal());
