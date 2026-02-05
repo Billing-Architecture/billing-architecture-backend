@@ -30,6 +30,9 @@ public class Payments {
     @Column(name = "payment_total")
     private double paymentTotal;
 
+    @Column(name = "payment_user_email")
+    private String paymentUserEmail;
+
     @Column(name = "payment_created_at")
     private LocalDateTime paymentCreatedAt;
 
@@ -44,6 +47,9 @@ public class Payments {
     }
     public void setPaymentTotal(double paymentTotal) {
         this.paymentTotal = paymentTotal;
+    }
+    public void setPaymentUserEmail(String paymentUserEmail) {
+        this.paymentUserEmail = paymentUserEmail;
     }
     public void setPaymentCreatedAt(LocalDateTime paymentCreatedAt) {
         this.paymentCreatedAt = paymentCreatedAt;
@@ -62,6 +68,9 @@ public class Payments {
     }
     public double getPaymentTotal() {
         return paymentTotal;
+    }
+    public String getPaymentUserEmail() {
+        return paymentUserEmail;
     }
     public LocalDateTime getPaymentCreatedAt() {
         return paymentCreatedAt;

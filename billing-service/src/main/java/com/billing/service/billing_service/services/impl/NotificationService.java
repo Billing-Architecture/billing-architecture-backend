@@ -25,8 +25,8 @@ public class NotificationService implements INotificationService{
         notification.setNotificationSubject("Purchase invoice");
         notification.setNotificationMessage("Thank you for your purchase. We have attached the invoice in PDF format.");
         notification.setNotificationReferenceType("INVOICE");
-        notification.setNotificationReceiver("email@example.com");
-        notification.setBillCode("");
+        notification.setNotificationReceiver(details.getOrder().getOrderUserEmail());
+        notification.setBillCode(details.getBillCode());
         notification.setBillToPay(details.getBillTotal());
         notification.setBillTotal(details.getBillTotal());
         notification.setBillTotalPaid(details.getBillTotalPaid());
@@ -37,14 +37,14 @@ public class NotificationService implements INotificationService{
     @Override
     public void sendEmail(Payments payments) {
         PaymentNotificationDTO notification = new PaymentNotificationDTO();
-        notification.setReferenceId(notification.getReferenceId());
+        notification.setReferenceId(payments.getPaymentId());
         notification.setNotificationSubject("Payment invoice");
         notification.setNotificationMessage("Thank you for your purchase.");
         notification.setNotificationReferenceType("PAYMENT");
-        notification.setNotificationReceiver("email@example.com");
-        notification.setPaymentType(notification.getPaymentType());
-        notification.setPaymentTotal(notification.getPaymentTotal());
-        notification.setPaymentCreatedAt(notification.getPaymentCreatedAt());
+        notification.setNotificationReceiver(payments.getPaymentUserEmail());
+        notification.setPaymentType(payments.getPaymentType());
+        notification.setPaymentTotal(payments.getPaymentTotal());
+        notification.setPaymentCreatedAt(payments.getPaymentCreatedAt());
 
         service.sendNotification(notification);
     }
