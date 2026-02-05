@@ -36,7 +36,6 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
         
         order.setOrderState("Pending");
         order.setOrder_created_at(LocalDateTime.now());
-        order.setOrderUserEmail(email);
         double descount = 0;
         double tax = 0;
         double subTotal = 0;
@@ -77,6 +76,7 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
 
         Bills bill = new Bills();
         bill.setBillCode("BILL-" + order.getOrderId());
+        bill.setBillUserEmail(email);
         bill.setBillTotalPaid(0);
         bill.setBillSubtotal(subTotalBill);
         bill.setBillTotal(totalBill);

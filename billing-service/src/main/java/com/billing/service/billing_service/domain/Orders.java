@@ -27,9 +27,6 @@ public class Orders {
     @Column(name = "order_state")
     private String orderState;
 
-    @Column(name = "order_user_email", updatable = false)
-    private String orderUserEmail;
-
     @Column(name = "order_created_at")
     private LocalDateTime order_created_at;
 
@@ -50,9 +47,6 @@ public class Orders {
     public void setOrderState(String orderState) {
         this.orderState = orderState;
     }
-    public void setOrderUserEmail(String orderUserEmail) {
-        this.orderUserEmail = orderUserEmail;
-    }
     public void setOrder_created_at(LocalDateTime order_created_at) {
         this.order_created_at = order_created_at;
     }
@@ -67,9 +61,6 @@ public class Orders {
     }
     public String getOrderState() {
         return orderState;
-    }
-    public String getOrderUserEmail() {
-        return orderUserEmail;
     }
     public LocalDateTime getOrder_created_at() {
         return order_created_at;
