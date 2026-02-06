@@ -35,10 +35,10 @@ public class ProductsOrdersController {
     @PostMapping("/add")
     @ResponseBody
     public List<ProductsOrders> createDetails(@RequestBody @Validated CreateDetailRequest request) {
-        ProductsOrders[] details = request.getDetail();
+        List<ProductsOrders> details = request.getDetail();
         String email = request.getEmail();
         Bills saveBill = service.saveProductsOrders(details);
         notifyService.sendEmail(saveBill, email);
-        return listDetails();   
+        return listDetails();
     }
 }

@@ -31,7 +31,7 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
 
     @Transactional
     @Override
-    public Bills saveProductsOrders(ProductsOrders details[]) {
+    public Bills saveProductsOrders(List<ProductsOrders> details) {
         Orders order = new Orders();
         
         order.setOrderState("Pending");
@@ -92,7 +92,7 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
     }
 
     @Override
-    public ProductsOrders byId(int id) {
+    public ProductsOrders byId(Long id) {
         return repositoryDetails.findById(id).orElseThrow(() -> new RuntimeException("Detail not found."));
     }
 }
