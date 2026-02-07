@@ -10,10 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.billing.service.billing_service.domain.Bills;
 import com.billing.service.billing_service.domain.Orders;
+import com.billing.service.billing_service.domain.Products;
 import com.billing.service.billing_service.domain.ProductsOrders;
+import com.billing.service.billing_service.dtos.ProductOrderItemRequest;
 import com.billing.service.billing_service.repositorys.BillsRepository;
 import com.billing.service.billing_service.repositorys.OrdersRepository;
 import com.billing.service.billing_service.repositorys.ProductsOrdersRepository;
+import com.billing.service.billing_service.repositorys.ProductsRepository;
 import com.billing.service.billing_service.services.IProductsOrdersService;
 
 @Service
@@ -29,13 +32,17 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
     @Autowired
     BillsRepository repositoryBill;
 
+    @Autowired
+    ProductsRepository repositoryProduct;
+
     @Transactional
     @Override
-    public Bills saveProductsOrders(List<ProductsOrders> details) {
+    public Bills saveProductsOrders(List<ProductOrderItemRequest> details) {
+
         Orders order = new Orders();
-        
         order.setOrderState("Pending");
         order.setOrder_created_at(LocalDateTime.now());
+        
         double descount = 0;
         double tax = 0;
         double subTotal = 0;
@@ -44,31 +51,38 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
         double subTotalBill = 0;
         double totalBill = 0;
 
-        for(ProductsOrders detail : details){
-            
+        for(ProductOrderItemRequest item : details){
+            System.out.println("Product ID: " + item.getProductId() + ", Quantity: " + item.getQuantity());
+            Products product = repositoryProduct
+                .findById(item.getProductId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+            ProductsOrders detail = new ProductsOrders();
+            detail.setProduct(product);
             detail.setOrder(order);
-            detail.setProductsOrdersPrice(detail.getProduct().getProductDefaultPrice());
+            detail.setProductsOrdersPrice(product.getProductDefaultPrice());
 
             subTotal = 
-                detail.getProduct().getProductDefaultPrice() * 
-                detail.getProductsOrdersQuantity();
+                product.getProductDefaultPrice() * 
+                item.getQuantity();
 
             descount = 
-                (detail.getProduct().getProductDescountPercentage() * 
-                detail.getProduct().getProductDefaultPrice()) * 
-                detail.getProductsOrdersQuantity();
+                (product.getProductDescountPercentage() * 
+                product.getProductDefaultPrice()) * 
+                item.getQuantity();
 
-            tax = detail.getProduct().getProductTaxPercentage() * 
-                detail.getProduct().getProductDefaultPrice() * 
-                detail.getProductsOrdersQuantity();
+            tax = product.getProductTaxPercentage() * 
+                product.getProductDefaultPrice() * 
+                item.getQuantity();
 
             total = (subTotal-descount) + tax;
+
+            detail.setProductsOrdersSubtotal(subTotal);
+            detail.setProductsOrdersTotal(total);
 
             subTotalBill += subTotal;
             totalBill += total;
 
-            detail.setProductsOrdersSubtotal(subTotal);
-            detail.setProductsOrdersTotal(total);
             order.getProducts().add(detail);
         }
 
