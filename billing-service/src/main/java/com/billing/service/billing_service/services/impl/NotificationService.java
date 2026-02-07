@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import com.billing.service.billing_service.client.NotificationClient;
 import com.billing.service.billing_service.domain.Bills;
 import com.billing.service.billing_service.domain.Payments;
-import com.billing.service.billing_service.dtos.BillNotificationDTO;
-import com.billing.service.billing_service.dtos.PaymentNotificationDTO;
+import com.billing.service.billing_service.dtos.notification.BillDTO;
+import com.billing.service.billing_service.dtos.notification.BillNotificationDTO;
+import com.billing.service.billing_service.dtos.notification.PaymentDTO;
+import com.billing.service.billing_service.dtos.notification.PaymentNotificationDTO;
 import com.billing.service.billing_service.services.INotificationService;
 
 @Service
@@ -35,16 +37,26 @@ public class NotificationService implements INotificationService{
     }
 
     @Override
-    public void sendEmail(Payments payments, String email) {
+    public void sendEmail(Payments payments, Bills saveBill, String email) {
+
         PaymentNotificationDTO notification = new PaymentNotificationDTO();
         notification.setReferenceId(payments.getPaymentId());
         notification.setNotificationSubject("Payment invoice");
         notification.setNotificationMessage("Thank you for your purchase.");
         notification.setNotificationReferenceType("PAYMENT");
         notification.setNotificationReceiver(email);
-        notification.setPaymentType(payments.getPaymentType());
-        notification.setPaymentTotal(payments.getPaymentTotal());
-        notification.setPaymentCreatedAt(payments.getPaymentCreatedAt());
+
+        PaymentDTO payment = new PaymentDTO();
+        payment.setPaymentType(payments.getPaymentType());
+        payment.setPaymentTotal(payments.getPaymentTotal());
+        payment.setPaymentCreatedAt(payments.getPaymentCreatedAt());
+        notification.setPayment(payment);
+
+        BillDTO bill = new BillDTO();
+        bill.setBillCode(saveBill.getBillCode());
+        bill.setBillTotal(saveBill.getBillTotal());
+        bill.setBillTotalPaid(saveBill.getBillTotalPaid());
+        notification.setBill(bill);
 
         service.sendNotification(notification);
     }

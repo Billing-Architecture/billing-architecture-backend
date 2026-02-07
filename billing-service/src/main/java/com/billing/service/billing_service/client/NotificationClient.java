@@ -5,8 +5,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.billing.service.billing_service.dtos.BillNotificationDTO;
-import com.billing.service.billing_service.dtos.PaymentNotificationDTO;
+import com.billing.service.billing_service.dtos.notification.BillNotificationDTO;
+import com.billing.service.billing_service.dtos.notification.PaymentNotificationDTO;
 
 @Component
 public class NotificationClient {
