@@ -1,4 +1,4 @@
-package com.billing.service.billing_service.dtos;
+package com.billing.service.billing_service.dtos.notification;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
