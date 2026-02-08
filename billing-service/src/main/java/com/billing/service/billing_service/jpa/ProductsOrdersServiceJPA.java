@@ -61,6 +61,7 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
             detail.setProduct(product);
             detail.setOrder(order);
             detail.setProductsOrdersPrice(product.getProductDefaultPrice());
+            detail.setProductsOrdersQuantity(item.getQuantity());
 
             subTotal = 
                 product.getProductDefaultPrice() * 

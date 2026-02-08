@@ -1,6 +1,6 @@
 package com.billing.service.billing_service.dtos.notification;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,7 +13,7 @@ public class PaymentDTO {
     private double paymentTotal;
 
     @JsonProperty("payment_created_at")
-    private LocalDateTime paymentCreatedAt;
+    private LocalDate paymentCreatedAt;
 
     public String getPaymentType() {
         return paymentType;
@@ -27,10 +27,10 @@ public class PaymentDTO {
     public void setPaymentTotal(double paymentTotal) {
         this.paymentTotal = paymentTotal;
     }
-    public LocalDateTime getPaymentCreatedAt() {
+    public LocalDate getPaymentCreatedAt() {
         return paymentCreatedAt;
     }
-    public void setPaymentCreatedAt(LocalDateTime paymentCreatedAt) {
+    public void setPaymentCreatedAt(LocalDate paymentCreatedAt) {
         this.paymentCreatedAt = paymentCreatedAt;
     }
 }

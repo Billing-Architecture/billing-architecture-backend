@@ -1,6 +1,6 @@
 package com.billing.service.billing_service.dtos.notification;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,7 +10,7 @@ public class BillNotificationDTO extends NotificationRequest{
     private String billCode;
 
     @JsonProperty("bill_issue_date")
-    private LocalDateTime billIssueDate;
+    private LocalDate billIssueDate;
 
     @JsonProperty("details")
     private DetailsDTO details;
@@ -18,7 +18,7 @@ public class BillNotificationDTO extends NotificationRequest{
     public void setBillCode(String billCode) {
         this.billCode = billCode;
     }
-    public void setBillIssueDate(LocalDateTime billIssueDate) {
+    public void setBillIssueDate(LocalDate billIssueDate) {
         this.billIssueDate = billIssueDate;
     }
     public void setDetails(DetailsDTO details) {
@@ -27,7 +27,7 @@ public class BillNotificationDTO extends NotificationRequest{
     public String getBillCode() {
         return billCode;
     }
-    public LocalDateTime getBillIssueDate() {
+    public LocalDate getBillIssueDate() {
         return billIssueDate;
     }
     public DetailsDTO getDetails() {
