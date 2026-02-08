@@ -30,7 +30,7 @@ public class NotificationService implements INotificationService{
     public void sendEmail(Bills details, String email) {
         BillNotificationDTO notification = new BillNotificationDTO();
         notification.setBillCode(details.getBillCode());
-        notification.setBillIssueDate(details.getBillCreatedAt());
+        notification.setBillIssueDate(details.getBillCreatedAt().toLocalDate());
         notification.setNotificationReceiver(email);
         notification.setNotificationSubject("Purchase invoice");
         notification.setReferenceId(details.getBillId());
@@ -50,6 +50,7 @@ public class NotificationService implements INotificationService{
             product.setProductName(item.getProduct().getProductName());
             product.setProductPrice(item.getProductsOrdersPrice());
             product.setProductQuantity(item.getProductsOrdersQuantity());
+            product.setProductSubtotal(item.getProductsOrdersPrice()*item.getProductsOrdersQuantity());
             products.add(product);
         }
         
@@ -71,13 +72,14 @@ public class NotificationService implements INotificationService{
         PaymentDTO payment = new PaymentDTO();
         payment.setPaymentType(payments.getPaymentType());
         payment.setPaymentTotal(payments.getPaymentTotal());
-        payment.setPaymentCreatedAt(payments.getPaymentCreatedAt());
+        payment.setPaymentCreatedAt(payments.getPaymentCreatedAt().toLocalDate());
         notification.setPayment(payment);
 
         BillDTO bill = new BillDTO();
         bill.setBillCode(saveBill.getBillCode());
         bill.setBillTotal(saveBill.getBillTotal());
         bill.setBillTotalPaid(saveBill.getBillTotalPaid());
+        bill.setBillToPay(saveBill.getBillTotal() - saveBill.getBillTotalPaid());
         notification.setBill(bill);
 
         service.sendNotification(notification);
