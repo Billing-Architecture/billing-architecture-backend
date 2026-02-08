@@ -1,14 +1,20 @@
 package com.billing.service.billing_service.services.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.billing.service.billing_service.client.NotificationClient;
 import com.billing.service.billing_service.domain.Bills;
 import com.billing.service.billing_service.domain.Payments;
+import com.billing.service.billing_service.domain.ProductsOrders;
 import com.billing.service.billing_service.dtos.notification.BillDTO;
 import com.billing.service.billing_service.dtos.notification.BillNotificationDTO;
+import com.billing.service.billing_service.dtos.notification.DetailsDTO;
 import com.billing.service.billing_service.dtos.notification.PaymentDTO;
 import com.billing.service.billing_service.dtos.notification.PaymentNotificationDTO;
+import com.billing.service.billing_service.dtos.notification.ProductDTO;
 import com.billing.service.billing_service.services.INotificationService;
 
 @Service
@@ -23,16 +29,32 @@ public class NotificationService implements INotificationService{
     @Override
     public void sendEmail(Bills details, String email) {
         BillNotificationDTO notification = new BillNotificationDTO();
-        notification.setReferenceId(details.getBillId());
+        notification.setBillCode(details.getBillCode());
+        notification.setBillIssueDate(details.getBillCreatedAt());
+        notification.setNotificationReceiver(email);
         notification.setNotificationSubject("Purchase invoice");
+        notification.setReferenceId(details.getBillId());
         notification.setNotificationMessage("Thank you for your purchase. We have attached the invoice in PDF format.");
         notification.setNotificationReferenceType("INVOICE");
-        notification.setNotificationReceiver(email);
-        notification.setBillCode(details.getBillCode());
-        notification.setBillToPay(details.getBillTotal());
-        notification.setBillTotal(details.getBillTotal());
-        notification.setBillTotalPaid(details.getBillTotalPaid());
+        
+        DetailsDTO detailDto = new DetailsDTO();
+        detailDto.setSubtotal(details.getBillSubtotal());
+        detailDto.setTotal(details.getBillTotal());
+        notification.setDetails(detailDto);
 
+        List<ProductDTO> products = new ArrayList<>();
+        List<ProductsOrders> listTemp = details.getOrder().getProducts();
+
+        for(ProductsOrders item : listTemp){
+            ProductDTO product = new ProductDTO();
+            product.setProductName(item.getProduct().getProductName());
+            product.setProductPrice(item.getProductsOrdersPrice());
+            product.setProductQuantity(item.getProductsOrdersQuantity());
+            products.add(product);
+        }
+        
+        detailDto.setProducts(products);
+        
         service.sendNotification(notification);
     }
 
