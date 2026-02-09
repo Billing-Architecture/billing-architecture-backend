@@ -119,32 +119,21 @@ Here are examples of how to make a request to the endpoints described above. You
 ### Example to add order detail
 - Request to add a detail
 ```json
-[
-    {
-        "productsOrdersQuantity": 2,
-        "product": {
+
+{
+    "email": "email@example.com",
+    "detail": [
+        {
+            "productId": 1, 
+            "quantity":2
+        },
+        {
             "productId": 2, 
-            "productCode": "product_code",
-            "productName": "product_name",
-            "productDescription": "product_description",
-            "productDefaultPrice": 950.00,
-            "productTaxPercentage": 13.0,
-            "productDescountPercentage": 5.0
+            "quantity":2
         }
-    },
-    {
-        "productsOrdersQuantity": 2,
-        "product": {
-            "productId": 3, 
-            "productCode": "product_code",
-            "productName": "product_name",
-            "productDescription": "product_description",
-            "productDefaultPrice": 950.00,
-            "productTaxPercentage": 13.0,
-            "productDescountPercentage": 5.0
-        }
-    }
-]
+    ]
+}
+
 ```
 
 ### Example to list payments
@@ -157,11 +146,14 @@ Here are examples of how to make a request to the endpoints described above. You
 - Request to add a payment
 ```json
 {
-  "bill": {
-    "billId": 2
-  },
-  "paymentType": "CARD",
-  "paymentTotal": 34200
+    "email": "email@example.com",
+    "payment": {
+        "bill": {
+            "billId": 1
+        },
+        "paymentType": "CARD",
+        "paymentTotal": 999
+    } 
 }
 ```
 

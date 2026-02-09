@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.billing.service.billing_service.domain.Bills;
 import com.billing.service.billing_service.domain.Payments;
+import com.billing.service.billing_service.repositorys.BillsRepository;
 import com.billing.service.billing_service.repositorys.OrdersRepository;
 import com.billing.service.billing_service.repositorys.PaymentsRepository;
 
@@ -27,11 +29,15 @@ public class PaymentsServiceJPATest {
     @Mock
     private PaymentsRepository repositoryPayment;
 
+    @InjectMocks
+    private PaymentsServiceJPA serviceJPA;
+
     @Mock
     private OrdersRepository repositoryOrders;
 
-    @InjectMocks
-    private PaymentsServiceJPA serviceJPA;
+    @Mock
+    private BillsRepository repositoryBill;
+
 
     @Test
     void shouldReturnPayments () {
@@ -46,6 +52,7 @@ public class PaymentsServiceJPATest {
     void shouldRegisterPartialPayment() {
 
         Bills bill = new Bills();
+        bill.setBillId(1L);
         bill.setBillTotal(100);
         bill.setBillTotalPaid(0);
         bill.setPayments(new ArrayList<>());
@@ -53,6 +60,9 @@ public class PaymentsServiceJPATest {
         Payments payment = new Payments();
         payment.setPaymentTotal(40);
         payment.setBill(bill);
+
+        when(repositoryBill.findById(1L)).thenReturn(Optional.of(bill));
+        when(repositoryPayment.save(any())).thenAnswer(i -> i.getArgument(0));
 
         serviceJPA.savePayment(payment);
 
@@ -66,8 +76,9 @@ public class PaymentsServiceJPATest {
     @Test
     void shouldRegisterFullPaymentAndMarkBillAsPaid() {
         Bills bill = new Bills();
+        bill.setBillId(1L);
         bill.setBillTotal(100);
-        bill.setBillTotalPaid(60);
+        bill.setBillTotalPaid(0);
         bill.setPayments(new ArrayList<>());
 
         Payments previous = new Payments();
@@ -77,6 +88,9 @@ public class PaymentsServiceJPATest {
         Payments payment = new Payments();
         payment.setPaymentTotal(40);
         payment.setBill(bill);
+
+        when(repositoryBill.findById(1L)).thenReturn(Optional.of(bill));
+        when(repositoryPayment.save(any())).thenAnswer(i -> i.getArgument(0));
 
         serviceJPA.savePayment(payment);
 
@@ -89,6 +103,7 @@ public class PaymentsServiceJPATest {
     @Test
     void shouldThrowExceptionWhenPaymentExceedsBillTotal() {
         Bills bill = new Bills();
+        bill.setBillId(1L);
         bill.setBillTotal(100);
         bill.setBillTotalPaid(80);
         bill.setPayments(new ArrayList<>());
@@ -101,6 +116,8 @@ public class PaymentsServiceJPATest {
         payment.setPaymentTotal(30);
         payment.setBill(bill);
 
+        when(repositoryBill.findById(1L)).thenReturn(Optional.of(bill));
+
         RuntimeException exception = assertThrows(
             RuntimeException.class,
             () -> serviceJPA.savePayment(payment)
@@ -108,5 +125,5 @@ public class PaymentsServiceJPATest {
 
         assertEquals("The payment exceeds the total invoice amount", exception.getMessage());
         verify(repositoryPayment, never()).save(any());
-    }
+    }                                                                           
 }
