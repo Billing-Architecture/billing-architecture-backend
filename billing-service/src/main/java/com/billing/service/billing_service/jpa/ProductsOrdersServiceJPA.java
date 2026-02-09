@@ -52,7 +52,6 @@ public class ProductsOrdersServiceJPA implements IProductsOrdersService{
         double totalBill = 0;
 
         for(ProductOrderItemRequest item : details){
-            System.out.println("Product ID: " + item.getProductId() + ", Quantity: " + item.getQuantity());
             Products product = repositoryProduct
                 .findById(item.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
